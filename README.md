@@ -36,7 +36,7 @@ Decompose the request → delegate to six domain sub-agents over a shared member
 ## Architecture
 
 ```
-01  Member surface     CLI demo · stdlib web app (localhost:8000) · live-mode toggle
+01  Member surface     CLI demo · designed web dashboard (localhost:8000) · live-mode toggle
 02  Orchestration      viba-concierge root agent + shared member memory
 03  Guardrails         PolicyEngine — every delegation and action passes through
 04  Domain sub-agents  golf · dining · tennis · marina · pool · hoa
@@ -68,9 +68,11 @@ python scripts/demo.py            # propose → gate → confirm → commit
 python scripts/demo.py --decline  # member declines: zero side effects
 python scripts/demo.py --json     # machine-readable result
 
-# 2) Browser — same orchestrator, live audit table, no API key
+# 2) Browser — designed member dashboard (scripts/ui.html), same orchestrator, no API key
 python3 scripts/webapp.py         # open http://localhost:8000
-#   member login · à-la-carte actions · member dashboard · staff override · live toggle
+#   chat bar + one-tap prompts · "Your day, perfectly planned" timeline · Today-at-a-glance
+#   à-la-carte actions · staff override · live audit table · live-mode toggle
+#   zero dependencies (stdlib http.server) — no framework, no build step
 
 # 3) Tests — the security boundaries, asserted on state
 python -m pytest tests/ -q        # 39 passing

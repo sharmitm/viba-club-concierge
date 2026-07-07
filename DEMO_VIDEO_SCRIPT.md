@@ -3,7 +3,7 @@
 **Target: ~4:15 spoken, safely under the 5-minute cap.** Covers all five rubric beats: **Problem · Why agents · Architecture · Demo · The Build.** Track: **Concierge Agents**.
 
 **Recording surfaces (all deterministic, no API key — timing never surprises you):**
-- Browser app — `python3 scripts/webapp.py` → `http://localhost:8000` (main demo surface: itinerary cards, the confirmation gate as a real control, live audit table)
+- **Main demo surface — the designed dashboard** (`scripts/ui.html`): `python3 scripts/webapp.py` → `http://localhost:8000`. The greeting + "How can I help you today?" chat bar with one-tap prompts, the *Today at a glance* strip (guest passes, cabanas, folio $0.00), the *Your day, perfectly planned* timeline with Confirmed/Pending states, the *À-la-carte* cards, the confirmation gate as a real control, and the live audit table. This is also the **cover image** for the Media Gallery.
 - Terminal — `python scripts/demo.py` and `python -m pytest tests/ -q` for the proof shots
 - The architecture diagram image for the architecture beat
 
@@ -37,9 +37,9 @@ Record clean video first, then lay the voiceover. Word counts per section keep y
 
 ### 4 · Demo — 2:00–3:30  *(~210 words)*
 
-**On screen:** the browser app, signed in as Eleanor. Type nothing — the request is pre-filled. Click **Plan**.
+**On screen:** the dashboard, signed in as Eleanor — "Good afternoon, Eleanor", the *Today at a glance* strip (6 guest passes, 2 cabanas, folio $0.00). Tap the **"Plan my whole Saturday"** chip in the chat bar.
 
-**VO:** "Here it is live. One request. It decomposes into six intents and delegates to six agents over her shared profile — and watch: each proposal is shaped to *her* preferences. Morning tee time. A window table. Her own slip at the marina."
+**VO:** "Here it is live. One request from the chat bar. It decomposes into six intents and delegates to six agents over her shared profile — and watch the *Your day, perfectly planned* timeline fill in: golf, lunch, tennis, pool, marina. Each proposal shaped to *her* preferences — morning tee time, a window table, her own slip at the marina — and each still marked Pending, not booked."
 
 **On screen:** the two FINDINGS lines with citations.
 
@@ -76,7 +76,7 @@ Record clean video first, then lay the voiceover. Word counts per section keep y
 | Problem | 0:00 | diagram / six-login split |
 | Why agents | 0:40 | fan-out animation over the request |
 | Architecture | 1:15 | six-layer diagram, layer highlights |
-| Demo — plan & findings | 2:00 | `webapp.py` → **Plan**, scroll to citations |
+| Demo — plan & findings | 2:00 | dashboard → "Plan my whole Saturday" chip → timeline fills, scroll to citations |
 | Demo — the gate | 2:40 | GATE ACTIVE + audit table → **Confirm** |
 | Demo — override | 3:05 | staff login → act-as delinquent → override toggle |
 | The Build | 3:30 | repo scroll + `pytest -q` → 39 passed |
@@ -86,3 +86,4 @@ Record clean video first, then lay the voiceover. Word counts per section keep y
 - Everything is deterministic and needs no key, so retakes reproduce exactly. If you record live Gemini mode via the web app's live toggle and latency lags, the dry-run recording is a drop-in substitute with identical beats.
 - Publish **unlisted or public on YouTube** and attach the link in the Kaggle Media Gallery. Keep total runtime **≤ 5:00** — this script leaves ~45s of headroom for pauses.
 - Add captions/on-screen labels for each audit verdict; judges scan fast.
+- **Cover image:** a screenshot of the dashboard hero (greeting + chat bar + *Today at a glance*) is the Media Gallery cover — no separate design needed.
