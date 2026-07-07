@@ -1,0 +1,12 @@
+[project]
+name = "viba-concierge"
+version = "0.1.0"
+description = "Viba Club member concierge: multi-agent orchestration with ADK, MCP tool servers, RAG, guardrails, and shared memory"
+requires-python = ">=3.11"
+dependencies = ["google-adk>=2.3.0", "fastmcp>=3.0.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
