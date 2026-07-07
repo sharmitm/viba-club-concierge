@@ -1,6 +1,6 @@
 # Viba Club Member Concierge
 
-### One request. Six clubs. No forms.
+### One request. Six systems. No forms.
 
 A multi-agent concierge for the **Google × Kaggle — AI Agents Intensive: Vibe Coding Capstone**, **Concierge Agents track**. A single natural-language member request fans out to six domain sub-agents (golf, dining, tennis, marina, pool, HOA) over shared member memory. Each proposes; none commit. A guardrail layer pauses for member confirmation before anything is booked or charged, answers policy questions with citations from the governing documents, and drafts — never submits — the HOA architectural request. The same guarded core runs from a CLI, from a zero-dependency web app, and under a live Gemini agent.
 

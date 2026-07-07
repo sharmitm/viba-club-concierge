@@ -59,11 +59,11 @@ Record clean video first, then lay the voiceover. Word counts per section keep y
 
 **On screen:** a fast scroll of the repo tree, then a terminal: `python -m pytest tests/ -q` → **39 passed**.
 
-**VO:** "How it's built: Python and Google's Agent Development Kit for the live agents, FastMCP for the six MCP servers, and a deterministic rule-based core so the entire thing — and its thirty-two tests — runs with no API key. The same PolicyEngine that guards the CLI is attached as a before-tool callback on the live Gemini agent, so no model output can route around it. And the safety claims aren't asserted on mocks — they're asserted on state. Thirty-two tests hold the line: never auto-charge, override-only-by-staff, zero side effects on decline."
+**VO:** "How it's built: Python and Google's Agent Development Kit for the live agents, FastMCP for the six MCP servers, and a deterministic rule-based core so the entire thing — and its thirty-nine tests — runs with no API key. The same PolicyEngine that guards the CLI is attached as a before-tool callback on the live Gemini agent, so no model output can route around it. And the safety claims aren't asserted on mocks — they're asserted on state. Thirty-nine tests hold the line: never auto-charge, override-only-by-staff, zero side effects on decline."
 
 **On screen:** run `python scripts/demo.py --decline` → "zero side effects."
 
-**VO:** "One request. Six clubs. No forms — and nothing happens until the member says yes."
+**VO:** "One request. Six systems. No forms — and nothing happens until the member says yes."
 
 **End card:** `Viba Club Concierge · Concierge track · ADK · MCP · RAG · Guardrails · Shared memory`
 

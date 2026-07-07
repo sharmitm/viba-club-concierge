@@ -1,6 +1,6 @@
 # Viba Club Member Concierge
 
-### One request. Six clubs. No forms.
+### One request. Six systems. No forms.
 
 *Google × Kaggle — AI Agents Intensive: Vibe Coding Capstone (Concierge track)*
 
