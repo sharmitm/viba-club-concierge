@@ -15,11 +15,11 @@ import re
 import uuid
 from dataclasses import dataclass, field
 
-from ..guardrails.policy import (
+from .policy import (
     DOMAIN_ENTITLEMENT, GuardrailViolation, PolicyEngine, Verdict, guarded_call,
 )
-from ..memory.member_profile import ItineraryItem, MemberMemory
-from ..observability.logging import current_agent, current_trace_id, get_logger, span
+from .member_profile import ItineraryItem, MemberMemory
+from .logging import current_agent, current_trace_id, get_logger, span
 from .domains import HANDLERS
 
 log = get_logger("viba.orchestrator")

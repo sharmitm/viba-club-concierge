@@ -8,13 +8,13 @@ from __future__ import annotations
 
 import pytest
 
-from viba_concierge.agents.orchestrator import ConciergeOrchestrator
-from viba_concierge.guardrails.policy import (
+from viba_concierge.core.orchestrator import ConciergeOrchestrator
+from viba_concierge.core.policy import (
     GuardrailViolation, PolicyEngine, Verdict, guarded_call, redact,
 )
 from viba_concierge.mcp_servers import connectors as c
 from viba_concierge.mcp_servers.seed_data import STORE, SATURDAY, reset_store
-from viba_concierge.rag.governing_docs import TfidfRetriever, ask_governing_docs
+from viba_concierge.core.governing_docs import TfidfRetriever, ask_governing_docs
 
 ELEANOR = "M-1014"
 REQUEST = ("Plan Saturday for me and three guests - morning golf, lunch at the "
@@ -279,6 +279,20 @@ class TestRag:
         result = ask_governing_docs("can I repaint my front door navy")
         ids = [citation["doc_id"] for citation in result["citations"]]
         assert "ccr-4.2" in ids
+
+    def test_paint_in_full_request_grounds_in_arc_not_golf(self):
+        # Regression: the HOA agent must scope its RAG query to the exterior-
+        # modification clause. Querying with the whole multi-intent request let
+        # golf/pool wording dominate TF-IDF and mis-cite the Golf Guest Policy
+        # (club-3.4) for the paint question, wrongly reporting "not pre-approved".
+        result = ConciergeOrchestrator(ELEANOR).propose(REQUEST)
+        hoa = [item for item in result.itinerary if item.domain == "hoa"]
+        assert hoa, "expected an HOA (ARC) proposal"
+        assert "ccr-4.2" in hoa[0].proposal
+        assert "club-3.4" not in hoa[0].proposal
+        # Classic Navy IS on the pre-approved palette per ccr-4.2 -> expedited.
+        assert any("pre-approved palette" in note and "not on" not in note
+                   for note in result.notes)
 
     def test_guest_pool_question_hits_guest_privileges(self):
         result = ask_governing_docs("can my guests use the pool guest pass")

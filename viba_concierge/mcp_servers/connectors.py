@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from ..observability.logging import get_logger, span
+from ..core.logging import get_logger, span
 from . import seed_data
 from .seed_data import STORE, SATURDAY
 

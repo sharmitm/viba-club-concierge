@@ -26,8 +26,8 @@ from pathlib import Path
 # Make the package importable no matter where this script is launched from.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from viba_concierge.agents.orchestrator import ConciergeOrchestrator
-from viba_concierge.guardrails.policy import (
+from viba_concierge.core.orchestrator import ConciergeOrchestrator
+from viba_concierge.core.policy import (
     GuardrailViolation, PolicyEngine, Verdict, guarded_call,
 )
 from viba_concierge.mcp_servers.connectors import TOOL_REGISTRY, is_side_effect

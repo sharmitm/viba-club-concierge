@@ -16,9 +16,9 @@ import sys
 
 sys.path.insert(0, ".")
 
-from viba_concierge.agents.orchestrator import ConciergeOrchestrator
+from viba_concierge.core.orchestrator import ConciergeOrchestrator
 from viba_concierge.mcp_servers.seed_data import reset_store
-from viba_concierge.observability.logging import configure
+from viba_concierge.core.logging import configure
 
 ELEANOR_REQUEST = (
     "Plan Saturday for me and three guests - morning golf, lunch at the Grill, "

@@ -24,9 +24,9 @@ Decompose the request → delegate to six domain sub-agents over a shared member
 
 | Key concept | Where | In this repo |
 |---|---|---|
-| **Agent / Multi-agent system (ADK)** | Code | `agents/orchestrator.py` + `agents/adk_app.py` (root `LlmAgent` + 6 sub-agents) + `agents/live.py` |
+| **Agent / Multi-agent system (ADK)** | Code | `core/orchestrator.py` + `agents/adk_app.py` (root `LlmAgent` + 6 sub-agents) + `agents/live.py` |
 | **MCP Server** | Code | `mcp_servers/serve.py` — 6 FastMCP servers over stdio, 20 tools, same functions back the ADK agents |
-| **Security features** | Code + Video | `guardrails/policy.py` — confirmation gates, never-auto-charge, standing/entitlement checks, PII redaction, role-gated staff override, audit log; asserted by 32 outcome tests |
+| **Security features** | Code + Video | `core/policy.py` — confirmation gates, never-auto-charge, standing/entitlement checks, PII redaction, role-gated staff override, audit log; asserted by 39 outcome tests |
 | **Deployability** | Video | `scripts/webapp.py` — stdlib-only web app, no API key, reproducible from this README |
 
 *(Plus RAG over governing docs with mandatory citations, and shared member memory as the coordination surface.)*
@@ -73,7 +73,7 @@ python3 scripts/webapp.py         # open http://localhost:8000
 #   member login · à-la-carte actions · member dashboard · staff override · live toggle
 
 # 3) Tests — the security boundaries, asserted on state
-python -m pytest tests/ -q        # 32 passing
+python -m pytest tests/ -q        # 39 passing
 
 # 4) MCP servers — each domain standalone over stdio
 python -m viba_concierge.mcp_servers.serve golf   # tennis|dining|pool|marina|hoa
@@ -91,7 +91,7 @@ The CLI, web app, and full test suite need **no key**. Live mode reads `GOOGLE_A
 
 ---
 
-## Responsible AI (32 outcome-based tests)
+## Responsible AI (39 outcome-based tests)
 
 - **Never auto-charge** — money tools (`charge_folio`, `log_fuel`) hard-blocked without confirmation, model-independent.
 - **Confirmation unlocks one tool, once** — approval is not a blank check.
@@ -107,20 +107,26 @@ The CLI, web app, and full test suite need **no key**. Live mode reads `GOOGLE_A
 
 ```
 viba_concierge/
-  observability/logging.py   structured JSON logs, trace propagation, timing spans
-  mcp_servers/seed_data.py   8 seeded members + systems of record + governing docs
-  mcp_servers/connectors.py  20 domain tools + side-effect registry (one source of truth)
-  mcp_servers/serve.py       six FastMCP servers over the same connectors
-  guardrails/policy.py       gates, never-auto-charge, standing/entitlement, staff override, PII redaction, audit
-  memory/member_profile.py   shared member profile + session memory
-  rag/governing_docs.py      TF-IDF retrieval with citations over CC&Rs and rules
-  agents/domains.py          six sub-agent handlers (propose, cite, never commit)
-  agents/orchestrator.py     decompose → delegate → aggregate → gate → commit
-  agents/adk_app.py          ADK root LlmAgent + sub-agents + guardrail callback
-  agents/live.py             live Gemini run + structured trace capture
-scripts/demo.py              CLI anchor demo: Eleanor's Saturday, end to end
-scripts/webapp.py            stdlib web surface over the same orchestrator
-tests/test_viba.py           32 tests: security boundaries + full-flow outcomes
-SUBMISSION_WRITEUP.md        Kaggle writeup  ·  DEMO_VIDEO_SCRIPT.md  video script
+  mcp_servers/
+    connectors.py     20 domain tools + side-effect registry (one source of truth)
+    serve.py          six FastMCP servers over the same connectors
+    seed_data.py      8 seeded members + systems of record + governing docs
+  core/                          <- rule-based engine (runs with no API key)
+    orchestrator.py   decompose -> delegate -> aggregate -> gate -> commit
+    domains.py        six sub-agent handlers (propose, cite, never commit)
+    policy.py         PolicyEngine: gates, never-auto-charge, standing/entitlement, staff override, PII redaction, audit
+    member_profile.py MemberMemory: shared member profile + session memory
+    governing_docs.py TF-IDF retrieval with citations over CC&Rs and rules
+    logging.py        structured JSON logs, trace propagation, timing spans
+  agents/                        <- Gemini (ADK) integration wrappers
+    adk_app.py        ADK root LlmAgent + sub-agents + guardrail callback
+    live.py           live Gemini run + structured trace capture
+notebooks/
+  eleanor_walkthrough.ipynb      data-flow walk-through + eval metrics + audit logs
+scripts/
+  demo.py             CLI anchor demo: Eleanor's Saturday, end to end
+  webapp.py           stdlib web surface over the same orchestrator
+tests/test_viba.py    39 tests: security boundaries + full-flow outcomes
+SUBMISSION_WRITEUP.md   Kaggle writeup   ·   DEMO_VIDEO_SCRIPT.md   video script
 DESIGN.md · IMPLEMENTATION_PLAN.md   rationale, data flow, rubric-mapped plan
 ```

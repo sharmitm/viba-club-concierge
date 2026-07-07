@@ -17,10 +17,10 @@ from typing import Any
 from google.adk.agents import LlmAgent
 from google.adk.tools import FunctionTool
 
-from ..guardrails.policy import PolicyEngine, Verdict
+from ..core.policy import PolicyEngine, Verdict
 from ..mcp_servers import connectors as c
-from ..observability.logging import get_logger
-from ..rag.governing_docs import ask_governing_docs
+from ..core.logging import get_logger
+from ..core.governing_docs import ask_governing_docs
 
 log = get_logger("viba.adk")
 

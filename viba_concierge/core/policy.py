@@ -19,7 +19,7 @@ from datetime import date
 from enum import Enum
 from typing import Any
 
-from ..observability.logging import get_logger, log_event
+from .logging import get_logger, log_event
 from ..mcp_servers.connectors import TOOL_REGISTRY, is_side_effect
 from ..mcp_servers.seed_data import STORE, TIER_BENEFITS
 

@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from ..mcp_servers.seed_data import STORE
-from ..observability.logging import get_logger, log_event
+from .logging import get_logger, log_event
 
 log = get_logger("viba.memory")
 

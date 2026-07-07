@@ -7,11 +7,11 @@ member confirms, which is what the guardrail layer enforces.
 """
 from __future__ import annotations
 
-from ..guardrails.policy import PolicyEngine, guarded_call
-from ..memory.member_profile import ItineraryItem, MemberMemory
+from .policy import PolicyEngine, guarded_call
+from .member_profile import ItineraryItem, MemberMemory
 from ..mcp_servers.seed_data import SATURDAY
-from ..observability.logging import current_agent, get_logger, span
-from ..rag.governing_docs import ask_governing_docs
+from .logging import current_agent, get_logger, span
+from .governing_docs import ask_governing_docs
 
 log = get_logger("viba.agents")
 
@@ -268,9 +268,19 @@ class HoaAgent(DomainHandler):
         member_id = self.memory.member_id
         request = (self.memory.session.raw_request or intent).strip()
 
-        # Ground the answer in whatever the member actually asked — not a fixed query.
+        # Ground the answer in the HOA-relevant part of the request. Querying with the
+        # whole multi-intent request lets golf/pool wording dominate TF-IDF and retrieve
+        # the wrong governing doc (e.g. the Golf Guest Policy for a paint question), so
+        # scope the query to the exterior-modification terms the member actually used
+        # (+ any color), anchored to the ARC domain.
         from ..mcp_servers.seed_data import GOVERNING_DOCS
-        rules = ask_governing_docs(request or "exterior modification approval")
+        lower = request.lower()
+        _mod_hits = [w for w in _MOD_WORDS if w in lower]
+        _color = _extract_color(lower)
+        hoa_query = " ".join(filter(None, [
+            "exterior modification architectural review approval",
+            *_mod_hits, _color or ""]))
+        rules = ask_governing_docs(hoa_query)
         if rules["citations"]:
             top = rules["citations"][0]
         else:  # no lexical hit -> fall back to the exterior-modifications rule, with its text

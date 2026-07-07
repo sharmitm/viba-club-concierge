@@ -37,12 +37,12 @@ TRACE f9f409d6c900 — PROPOSED ITINERARY (6 actions, none committed)
   2. [dining] Lunch at The Grill 12:00, party of 4 (window table, no shellfish for one guest)
   3. [tennis] Tennis on court-1 at 14:00
   4. [marina] Sunset launch at 18:30, 4 aboard (own vessel 'Second Wind', slip B-07)
-  5. [  pool] Pool guest passes for 3 guests (uses 3 of 6 remaining, [club-7.1])
-  6. [   hoa] Draft ARC request for navy front door, pre-approved palette [ccr-4.2] (draft only)
+  5. [  pool] Pool guest passes for Priya S., Daniel K., Maya L. (uses 3 of 6 remaining, [club-7.1])
+  6. [   hoa] Draft ARC request — front door repaint (Navy), grounded in [ccr-4.2] (draft only)
 
 FINDINGS
   - pool: guests ELIGIBLE (6 passes remaining) per [club-7.1]
-  - hoa: navy front door is on the pre-approved palette per [ccr-4.2]; ARC approval still required
+  - hoa: Navy front door is on the pre-approved palette (expedited ~5 business days) per [ccr-4.2]; ARC approval still required
 
 GATE ACTIVE: paused for member confirmation. Nothing booked, nothing charged.
 
@@ -93,12 +93,12 @@ Six architectural decisions carry the build:
 
 | Key concept (rubric) | Where | In the code / video |
 |---|---|---|
-| **Agent / Multi-agent system (ADK)** | Code | `agents/orchestrator.py`, `agents/adk_app.py`, `agents/live.py` — root `LlmAgent` + 6 sub-agents; one request fans out and reconciles into one itinerary, in CLI, web, and live modes |
+| **Agent / Multi-agent system (ADK)** | Code | `core/orchestrator.py`, `agents/adk_app.py`, `agents/live.py` — root `LlmAgent` + 6 sub-agents; one request fans out and reconciles into one itinerary, in CLI, web, and live modes |
 | **MCP Server** | Code | `mcp_servers/serve.py` — 6 FastMCP servers over stdio, 20 tools; the *same* functions back the ADK agents (`connectors.py`) |
-| **Security features** | Code + Video | `guardrails/policy.py` — `NEEDS_CONFIRMATION` for every side effect before approval; charge tools can never auto-fire; standing/entitlement checks; PII redaction; role-gated, audited staff override. 32 outcome tests |
+| **Security features** | Code + Video | `core/policy.py` — `NEEDS_CONFIRMATION` for every side effect before approval; charge tools can never auto-fire; standing/entitlement checks; PII redaction; role-gated, audited staff override. 39 outcome tests |
 | **Deployability** | Video | `scripts/webapp.py` — stdlib-only web app, no API key, reproducible from the README; runs the identical guarded core |
 
-*(Bonus beyond the required three: **RAG** over governing docs with mandatory `[doc-id]` citations (`rag/governing_docs.py`), and **shared member memory** as the coordination surface (`memory/member_profile.py`).)*
+*(Bonus beyond the required three: **RAG** over governing docs with mandatory `[doc-id]` citations (`core/governing_docs.py`), and **shared member memory** as the coordination surface (`core/member_profile.py`).)*
 
 All of it is exercised by a **single run** of `scripts/demo.py`, and again through the browser.
 
@@ -106,7 +106,7 @@ All of it is exercised by a **single run** of `scripts/demo.py`, and again throu
 
 ## Responsible AI — enforced in state, not prompts
 
-The safety story is the interesting engineering, so it is tested on outcomes, not mocks. **32 tests pass** covering:
+The safety story is the interesting engineering, so it is tested on outcomes, not mocks. **39 tests pass** covering:
 
 - **Never auto-charge** — the two money tools (`charge_folio`, `log_fuel`) are hard-blocked without confirmation, independent of model behavior. `test_charge_never_fires_without_confirmation`, `test_fuel_is_never_auto_charged`, `test_itinerary_confirmation_never_unlocks_charge`.
 - **Confirmation unlocks one tool, once** — approving the itinerary does not hand the agent a blank check. `test_confirmation_unlocks_single_tool_only`.
@@ -134,7 +134,7 @@ python scripts/demo.py --json     # machine-readable result
 # Browser (no API key) — same orchestrator, live audit table
 python3 scripts/webapp.py         # http://localhost:8000
 
-python -m pytest tests/ -q        # 32 outcome-based tests
+python -m pytest tests/ -q        # 39 outcome-based tests
 
 # Live mode (Gemini via ADK) — same guardrails
 export GOOGLE_API_KEY=...

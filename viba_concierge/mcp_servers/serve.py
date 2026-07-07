@@ -15,8 +15,8 @@ import sys
 
 from fastmcp import FastMCP
 
-from ..observability.logging import configure, get_logger
-from ..rag.governing_docs import ask_governing_docs
+from ..core.logging import configure, get_logger
+from ..core.governing_docs import ask_governing_docs
 from . import connectors as c
 
 log = get_logger("viba.mcp")

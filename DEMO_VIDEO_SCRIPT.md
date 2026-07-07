@@ -57,7 +57,7 @@ Record clean video first, then lay the voiceover. Word counts per section keep y
 
 ### 5 · The Build — 3:30–4:15  *(~110 words)*
 
-**On screen:** a fast scroll of the repo tree, then a terminal: `python -m pytest tests/ -q` → **32 passed**.
+**On screen:** a fast scroll of the repo tree, then a terminal: `python -m pytest tests/ -q` → **39 passed**.
 
 **VO:** "How it's built: Python and Google's Agent Development Kit for the live agents, FastMCP for the six MCP servers, and a deterministic rule-based core so the entire thing — and its thirty-two tests — runs with no API key. The same PolicyEngine that guards the CLI is attached as a before-tool callback on the live Gemini agent, so no model output can route around it. And the safety claims aren't asserted on mocks — they're asserted on state. Thirty-two tests hold the line: never auto-charge, override-only-by-staff, zero side effects on decline."
 
@@ -79,7 +79,7 @@ Record clean video first, then lay the voiceover. Word counts per section keep y
 | Demo — plan & findings | 2:00 | `webapp.py` → **Plan**, scroll to citations |
 | Demo — the gate | 2:40 | GATE ACTIVE + audit table → **Confirm** |
 | Demo — override | 3:05 | staff login → act-as delinquent → override toggle |
-| The Build | 3:30 | repo scroll + `pytest -q` → 32 passed |
+| The Build | 3:30 | repo scroll + `pytest -q` → 39 passed |
 | Close | 4:00 | `demo.py --decline` → zero side effects + end card |
 
 **Production notes**

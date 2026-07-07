@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from ..mcp_servers.seed_data import GOVERNING_DOCS
-from ..observability.logging import get_logger, span
+from .logging import get_logger, span
 
 log = get_logger("viba.rag")
 
