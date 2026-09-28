@@ -10,3 +10,7 @@ dev = ["pytest>=8.0.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--strict-markers"
+markers = [
+    "spec(*ids): links a test to the specs/ requirement id(s) it proves",
+]

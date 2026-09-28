@@ -26,7 +26,7 @@ Decompose the request → delegate to six domain sub-agents over a shared member
 |---|---|---|
 | **Agent / Multi-agent system (ADK)** | Code | `core/orchestrator.py` + `agents/adk_app.py` (root `LlmAgent` + 6 sub-agents) + `agents/live.py` |
 | **MCP Server** | Code | `mcp_servers/serve.py` — 6 FastMCP servers over stdio, 20 tools, same functions back the ADK agents |
-| **Security features** | Code + Video | `core/policy.py` — confirmation gates, never-auto-charge, standing/entitlement checks, PII redaction, role-gated staff override, audit log; asserted by 39 outcome tests |
+| **Security features** | Code + Video | `core/policy.py` — confirmation gates, never-auto-charge, standing/entitlement checks, PII redaction, role-gated staff override, audit log; asserted by 49 outcome tests traced to `specs/` |
 | **Deployability** | Video | `scripts/webapp.py` — stdlib-only web app, no API key, reproducible from this README |
 
 *(Plus RAG over governing docs with mandatory citations, and shared member memory as the coordination surface.)*
@@ -75,7 +75,8 @@ python3 scripts/webapp.py         # open http://localhost:8000
 #   zero dependencies (stdlib http.server) — no framework, no build step
 
 # 3) Tests — the security boundaries, asserted on state
-python -m pytest tests/ -q        # 39 passing
+python -m pytest tests/ -q        # 49 passing (+1 live-mode test skipped without google-adk)
+python -m tests.test_spec_traceability   # requirement -> test matrix
 
 # 4) MCP servers — each domain standalone over stdio
 python -m viba_concierge.mcp_servers.serve golf   # tennis|dining|pool|marina|hoa
@@ -93,7 +94,7 @@ The CLI, web app, and full test suite need **no key**. Live mode reads `GOOGLE_A
 
 ---
 
-## Responsible AI (39 outcome-based tests)
+## Responsible AI (49 outcome-based tests)
 
 - **Never auto-charge** — money tools (`charge_folio`, `log_fuel`) hard-blocked without confirmation, model-independent.
 - **Confirmation unlocks one tool, once** — approval is not a blank check.
@@ -128,7 +129,9 @@ notebooks/
 scripts/
   demo.py             CLI anchor demo: Eleanor's Saturday, end to end
   webapp.py           stdlib web surface over the same orchestrator
+specs/                testable requirements (GR, CN, TR, RG, OR, OB, LV); spec-driven workflow
 tests/test_viba.py    39 tests: security boundaries + full-flow outcomes
-SUBMISSION_WRITEUP.md   Kaggle writeup   ·   DEMO_VIDEO_SCRIPT.md   video script
+tests/test_spec_*.py  spec-gap tests + traceability check (specs <-> tests)
+SUBMISSION_WRITEUP.md   Kaggle writeup
 DESIGN.md · IMPLEMENTATION_PLAN.md   rationale, data flow, rubric-mapped plan
 ```

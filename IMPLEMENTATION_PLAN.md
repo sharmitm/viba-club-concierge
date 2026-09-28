@@ -7,17 +7,17 @@ Scope: two weeks. Back ends are mocked with seeded data; the build is the agent 
 
 | Concept | Where it lives | Proof in demo |
 |---|---|---|
-| Multi-agent orchestration (ADK) | `agents/orchestrator.py`, `agents/adk_app.py` (root LlmAgent + 6 sub-agents) | One request fans out to six sub-agents, reconciled into one itinerary |
+| Multi-agent orchestration (ADK) | `core/orchestrator.py`, `agents/adk_app.py` (root LlmAgent + 6 sub-agents) | One request fans out to six sub-agents, reconciled into one itinerary |
 | MCP tool servers | `mcp_servers/serve.py` (6 FastMCP servers), `mcp_servers/connectors.py` | Each domain exposes list/book/cancel tools over MCP stdio |
-| RAG over governing docs | `rag/governing_docs.py` | "Can I paint my door navy?" answered with a [ccr-4.2] citation |
-| Policy and guardrail layer | `guardrails/policy.py` | Audit trail shows NEEDS_CONFIRMATION for every side effect before member approval; charge tools can never auto-fire |
-| Shared member memory | `memory/member_profile.py` | Preferences, registered guests, and entitlements shape every sub-agent proposal; history appended after commit |
+| RAG over governing docs | `core/governing_docs.py` | "Can I paint my door navy?" answered with a [ccr-4.2] citation |
+| Policy and guardrail layer | `core/policy.py` | Audit trail shows NEEDS_CONFIRMATION for every side effect before member approval; charge tools can never auto-fire |
+| Shared member memory | `core/member_profile.py` | Preferences, registered guests, and entitlements shape every sub-agent proposal; history appended after commit |
 
 ## Week 1: core system (done in this repo)
 
 Day 1 and 2: Foundations
 - Repo scaffold, seeded systems of record for all six clubs (`seed_data.py`)
-- Observability first: structured JSON logging with trace_id propagation, timing spans, error capture (`observability/logging.py`)
+- Observability first: structured JSON logging with trace_id propagation, timing spans, error capture (`core/logging.py`)
 
 Day 3 and 4: Tools and guardrails
 - Domain connectors with a side-effect registry; one source of truth consumed by both ADK FunctionTools and FastMCP servers
@@ -68,6 +68,6 @@ Day 14: Kaggle writeup and submission
 
 ## Definition of done
 
-- All tests pass; demo runs clean in both approve and decline paths
+- All tests pass, including `tests/test_spec_traceability.py` (every `enforced` requirement in `specs/` has a test); demo runs clean in both approve and decline paths
 - Live playground reproduces the anchor scenario with citations
 - Video plus writeup submitted with the concept mapping table

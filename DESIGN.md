@@ -1,5 +1,7 @@
 # Viba Club Concierge: Design
 
+> This document explains *why*. The testable *what* lives in [`specs/`](specs/README.md); where the two disagree, the spec wins and this file is fixed.
+
 ## Problem
 
 A luxury community is fragmented across six systems (tee sheet, court grid, aquatics registry, marina ledger, dining POS, HOA portal), each with its own login and ruleset. A member's natural request ("Plan Saturday for me and three guests...") spans all six. The product is the orchestration: decompose, reason over availability and entitlements and governing documents, chain the actions, and confirm with the member before anything is booked or charged. A booking form could never span it.
@@ -25,7 +27,7 @@ Connector functions in `mcp_servers/connectors.py` are plain Python, registered 
 - Dry-run mode: `guarded_call()` is the only way handlers and the orchestrator reach a tool.
 - Live ADK mode: the same engine is attached as `before_tool_callback` on the root agent and every sub-agent; returning a dict short-circuits the tool, so no model output can route around it.
 
-Order of checks: unknown tool (deny), unknown member (deny), standing (deny, CC&R 9.1), entitlement (deny), side effect without confirmation (needs_confirmation). Charge tools (`charge_folio`, `issue_guest_passes`) carry an explicit never-auto-charge reason. Confirmation is per session and recorded; the audit log captures every verdict with PII-redacted arguments.
+Order of checks: unknown tool (deny), unknown member (deny), standing (deny, CC&R 9.1; waivable only by an audited staff override), entitlement (deny, never overridable), weekend tier (deny), side effect without confirmation (needs_confirmation). Charge tools (`charge_folio`, `log_fuel`) need their own explicit confirmation: blanket itinerary approval never unlocks them. `issue_guest_passes` only decrements the pass allotment, so it is gated like any other side effect. Confirmation is per session and recorded; the audit log captures every verdict with PII-redacted arguments.
 
 ### 3. Propose then commit (two-phase itinerary)
 Sub-agents only READ and PROPOSE. Proposals are `ItineraryItem`s in shared session memory carrying the exact side-effect tool and args that would commit them. The orchestrator policy-checks each proposed action during the propose phase so the audit trail visibly records the pause (NEEDS_CONFIRMATION rows) before the member ever answers. On approval, `commit()` unlocks the session and executes each item through the same guarded path; on decline, zero side effects, provable from the seeded store.
